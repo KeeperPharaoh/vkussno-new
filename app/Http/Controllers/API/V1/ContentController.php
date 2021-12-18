@@ -23,19 +23,19 @@ class ContentController extends BaseController
         return $this->sendResponse($result);
     }
 
-    public function benefit()
+    public function benefit(): JsonResponse
     {
         $result = $this->contentServices->benefit();
         return $this->sendResponse($result);
     }
 
-    public function about()
+    public function about(): JsonResponse
     {
         $result = $this->contentServices->about();
         return $this->sendResponse($result);
     }
 
-    public function faq()
+    public function faq(): JsonResponse
     {
         $result = $this->contentServices->faq();
         return $this->sendResponse($result);

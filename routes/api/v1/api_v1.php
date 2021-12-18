@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\CategoryController;
-use App\Http\Controllers\API\V1\SubcategoryController;
 use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\FavoriteController;
 use App\Http\Controllers\API\V1\AddressController;
@@ -35,13 +34,15 @@ Route::middleware('auth:sanctum')->prefix('address')->group(function (){
 //Категории
 Route::prefix('categories')->group(function () {
     Route::get('', [CategoryController::class, 'index']);
-    Route::get('{id}', [CategoryController::class, 'showSubCategoriesById']);
+    Route::get('{id}/subcategories', [CategoryController::class, 'showSubCategoriesById']);
     Route::get('{id}/products', [ProductController::class, 'showProductsBySubCategoryId']);
+    Route::get('{id}/all', [ProductController::class, 'showAllProductsByCategory']);
 });
 
 //Продукты
 Route::get('product/{id}', [ProductController::class, 'getProductById']);
 Route::get('/products/search', [ProductController::class, 'search']);
+
 //Избранное
 Route::middleware('auth:sanctum')->prefix('favorite')->group(function (){
     Route::get('show', [FavoriteController::class,'show']);

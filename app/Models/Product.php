@@ -27,4 +27,8 @@ class Product extends Model
 
     protected $table = ProductContract::TABLE;
 
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'subcategory_id');
+    }
 }

@@ -22,14 +22,14 @@ class AddressRepositories extends BaseRepository
             ;
     }
 
-    public function updateAddresses($id, $data)
+    public function updateAddresses(int $id, array $data)
     {
         return Address::query()
                         ->find($id)
                         ->update($data);
     }
 
-    public function deleteAddresses($id)
+    public function deleteAddresses(int $id)
     {
         $result = Address::query()
                          ->find($id)

@@ -25,9 +25,21 @@ class ProductService extends BaseService
         $this->productRepository = $productRepository;
     }
 
-    public function showProductsBySubCategoryId($id): LengthAwarePaginator
+    public function showProductsBySubCategoryId(int $id, ?string $sort): LengthAwarePaginator
     {
-        $products = $this->productRepository->showProductsBySubCategoryId($id);
+        $products = $this->productRepository->showProductsBySubCategoryId($id,$sort);
+
+        foreach ($products as $product) {
+            $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
+        }
+
+        return $products;
+    }
+
+    public function showAllProductsByCategory(int $id, ?string $sort): LengthAwarePaginator
+    {
+        $products = $this->productRepository->showAllProductsByCategory($id,$sort);
         foreach ($products as $product) {
             $product->image = env('APP_URL') . '/storage/' . $product->image;
             $product->isFavorite = $this->isFavorite($product->id);
@@ -35,7 +47,7 @@ class ProductService extends BaseService
         return $products;
     }
 
-    public function getProductById($id): ?Model
+    public function getProductById(int $id): ?Model
     {
         $result = $this->productRepository->show($id);
         $result->image = env('APP_URL') . '/storage/' . $result->image;
@@ -43,9 +55,9 @@ class ProductService extends BaseService
         return $result;
     }
 
-    public function search($attributes): LengthAwarePaginator
+    public function search(?string $search, ?string $sort): LengthAwarePaginator
     {
-        $products = $this->productRepository->search($attributes);
+        $products = $this->productRepository->search($search, $sort);
         foreach ($products as $product) {
             $product->image = env('APP_URL') . '/storage/' . $product->image;
             $product->isFavorite = $this->isFavorite($product->id);
@@ -53,7 +65,7 @@ class ProductService extends BaseService
         return $products;
     }
 
-    public function isFavorite($id): bool
+    public function isFavorite(int $id): bool
     {
         if (Auth::guard('sanctum')->check()) {
             $status = $this->productRepository->isFavorite($id);

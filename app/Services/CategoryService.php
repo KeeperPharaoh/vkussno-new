@@ -24,10 +24,16 @@ class CategoryService extends BaseService
 
     public function index()
     {
-        return $this->categoryRepository->getCategory();
+        $data = [];
+        $categories = $this->categoryRepository->getCategory();
+        foreach ($categories as $category){
+            $count = $this->categoryRepository->getCount($category->id);
+            $category->count = $count;
+        }
+        return $categories;
     }
 
-    public function showSubCategoriesById($id)
+    public function showSubCategoriesById(int $id)
     {
         return $this->categoryRepository->getSubCategory($id);
     }

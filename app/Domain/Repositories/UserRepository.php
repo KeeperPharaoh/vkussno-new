@@ -16,7 +16,7 @@ class UserRepository extends BaseRepository
         return new User();
     }
 
-    public function updateProfile($data)
+    public function updateProfile(array $data)
     {
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Services;
 
@@ -21,7 +21,7 @@ class AuthService extends BaseService
         $this->userRepository = $userRepository;
     }
 
-    public function register($attributes): array
+    public function register(array $attributes): array
     {
         $attributes['password'] = bcrypt($attributes['password']);
 
@@ -38,7 +38,7 @@ class AuthService extends BaseService
         return $success;
     }
 
-    public function login($attributes): array
+    public function login(array $attributes): array
     {
         $phone    = $attributes['phone'];
         $password = $attributes['password'];

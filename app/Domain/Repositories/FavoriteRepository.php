@@ -23,7 +23,7 @@ class FavoriteRepository extends BaseRepository
         ;
     }
 
-    public function check($id)
+    public function check(int $id)
     {
         return Favorite::query()
             ->where(FavoriteContract::USER_ID, Auth::id())
@@ -32,7 +32,7 @@ class FavoriteRepository extends BaseRepository
         ;
     }
 
-    public function deleteById($id)
+    public function deleteById(int $id)
     {
         return Favorite::query()
                         ->where(FavoriteContract::USER_ID, Auth::id())

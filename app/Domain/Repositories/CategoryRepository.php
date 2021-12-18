@@ -4,8 +4,11 @@ namespace App\Domain\Repositories;
 
 
 use App\Domain\Contracts\CategoryContract;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
 use Japananimetime\Template\BaseRepository;
 use App\Models\Category;
+use Ramsey\Collection\Collection;
 
 class CategoryRepository extends BaseRepository
 {
@@ -23,11 +26,27 @@ class CategoryRepository extends BaseRepository
                        ->get();
     }
 
-    public function getSubCategory($id)
+    public function getSubCategory(int $id)
     {
         return Category::query()
                         ->where('parent_id',$id)
                         ->select('id',CategoryContract::TITLE)
                         ->get();
+    }
+
+    public function getCount(int $id): int
+    {
+        $categoryIds = Category::query()
+                               ->where('parent_id', $parentId = Category::query()
+                                                                        ->where('id', $id)
+                                                                        ->value('id'))
+                               ->pluck('id')
+                               ->push($parentId)
+                               ->all();
+
+        return Product::query()
+                      ->whereIn('subcategory_id',$categoryIds)
+                      ->count()
+        ;
     }
 }

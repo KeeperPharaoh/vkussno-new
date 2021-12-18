@@ -29,7 +29,7 @@ class UserService extends BaseService
         return Auth::user();
     }
 
-    public function updateProfile($attributes): string
+    public function updateProfile(array $attributes): string
     {
         try {
             DB::beginTransaction();

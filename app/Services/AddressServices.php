@@ -21,10 +21,9 @@ class AddressServices extends BaseService
     public function showUserAddresses()
     {
         return $this->addressRepositories->showUserAddresses();
-
     }
 
-    public function add($attributes)
+    public function add(array $attributes)
     {
         DB::beginTransaction();
         $attributes['user_id'] = Auth::id();
@@ -32,7 +31,7 @@ class AddressServices extends BaseService
         DB::commit();
     }
 
-    public function updateAddresses($id, $attributes): string
+    public function updateAddresses(int $id, array $attributes): string
     {
         try {
             DB::beginTransaction();
@@ -47,7 +46,7 @@ class AddressServices extends BaseService
         }
     }
 
-    public function deleteAddresses($id)
+    public function deleteAddresses(int $id)
     {
         return $this->addressRepositories->deleteAddresses($id);
     }

@@ -10,7 +10,7 @@ class CategoryCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     *
      */
     public function toArray($request)
     {
@@ -18,7 +18,8 @@ class CategoryCollection extends ResourceCollection
             return [
                 'id'    => $item->id,
                 'image' => env('APP_URL') . '/storage/' . $item->image,
-                'title' => $item->title
+                'title' => $item->title,
+                'count' => $item->count
             ];
         });
     }

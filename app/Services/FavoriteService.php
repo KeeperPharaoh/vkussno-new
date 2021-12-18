@@ -29,12 +29,12 @@ class FavoriteService extends BaseService
         return $this->productRepository->getProductsById($productsId);
     }
 
-    public function check($id)
+    public function check(int $id)
     {
         return $this->favoriteRepository->check($id);
     }
 
-    public function add($id): \Illuminate\Database\Eloquent\Model
+    public function add(int $id): \Illuminate\Database\Eloquent\Model
     {
         return $this->favoriteRepository->create([
             FavoriteContract::USER_ID    => Auth::id(),
@@ -42,7 +42,7 @@ class FavoriteService extends BaseService
             ]);
     }
 
-    public function deleteById($id)
+    public function deleteById(int $id)
     {
         return $this->favoriteRepository->deleteById($id);
     }
