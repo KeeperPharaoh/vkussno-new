@@ -19,6 +19,9 @@ class Product extends Model
             ProductContract::PRICE,
     ];
     protected $hidden = [
+        ProductContract::PROMOTIONAL,
+        ProductContract::NEW,
+        ProductContract::RECOMMENDED,
         'deleted_at',
         'created_at',
         'updated_at',

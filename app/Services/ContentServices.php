@@ -2,39 +2,50 @@
 
 namespace App\Services;
 
-use App\Domain\Repositories\ContentRepositories;
-use App\Models\AboutCompany;
-use App\Models\Benefits;
-use App\Models\Faq;
-use App\Models\Slider;
+use App\Domain\Repositories\AboutCompanyRepositories;
+use App\Domain\Repositories\BenefitsRepositories;
+use App\Domain\Repositories\FaqRepositories;
+use App\Domain\Repositories\SliderRepositories;
+use Illuminate\Database\Eloquent\Collection;
 use Japananimetime\Template\BaseService;
 
 class ContentServices extends BaseService
 {
-//    public ContentRepositories $contentRepositories;
-//
-//    public function __construct(ContentRepositories $contentRepositories)
-//    {
-//        $this->contentRepositories = $contentRepositories;
-//    }
+    private SliderRepositories $sliderRepositories;
+    private BenefitsRepositories $benefitsRepositories;
+    private AboutCompanyRepositories $aboutCompanyRepositories;
+    private FaqRepositories $faqRepositories;
 
-    public function slider()
+    public function __construct(
+        SliderRepositories $sliderRepositories,
+        BenefitsRepositories $benefitsRepositories,
+        AboutCompanyRepositories $aboutCompanyRepositories,
+        FaqRepositories $faqRepositories
+    )
     {
-        return Slider::all();
+        parent::__construct();
+        $this->sliderRepositories       = $sliderRepositories;
+        $this->benefitsRepositories     = $benefitsRepositories;
+        $this->aboutCompanyRepositories = $aboutCompanyRepositories;
+        $this->faqRepositories          = $faqRepositories;
+    }
+    public function slider(): Collection
+    {
+        return $this->sliderRepositories->all();
     }
 
-    public function benefit()
+    public function benefit(): Collection
     {
-        return Benefits::all();
+        return $this->benefitsRepositories->all();
     }
 
-    public function about()
+    public function about(): Collection
     {
-        return AboutCompany::all();
+        return $this->aboutCompanyRepositories->all();
     }
 
-    public function faq()
+    public function faq(): Collection
     {
-        return Faq::all();
+        return $this->faqRepositories->all();
     }
 }

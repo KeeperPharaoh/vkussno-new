@@ -10,4 +10,5 @@ interface CategoryContract
     public const TITLE     = 'title';
     public const IMAGE     = 'image';
     public const PARENT_ID = 'parent_id';
+
 }

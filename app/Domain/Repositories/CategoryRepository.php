@@ -4,6 +4,7 @@ namespace App\Domain\Repositories;
 
 
 use App\Domain\Contracts\CategoryContract;
+use App\Domain\Contracts\ProductContract;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Japananimetime\Template\BaseRepository;
@@ -21,7 +22,7 @@ class CategoryRepository extends BaseRepository
     public function getCategory()
     {
         return Category::query()
-                       ->where('parent_id', null)
+                       ->where(CategoryContract::PARENT_ID, null)
                        ->select('id',CategoryContract::IMAGE,CategoryContract::TITLE)
                        ->get();
     }
@@ -29,7 +30,7 @@ class CategoryRepository extends BaseRepository
     public function getSubCategory(int $id)
     {
         return Category::query()
-                        ->where('parent_id',$id)
+                        ->where(CategoryContract::PARENT_ID,$id)
                         ->select('id',CategoryContract::TITLE)
                         ->get();
     }
@@ -37,7 +38,7 @@ class CategoryRepository extends BaseRepository
     public function getCount(int $id): int
     {
         $categoryIds = Category::query()
-                               ->where('parent_id', $parentId = Category::query()
+                               ->where(CategoryContract::PARENT_ID, $parentId = Category::query()
                                                                         ->where('id', $id)
                                                                         ->value('id'))
                                ->pluck('id')
@@ -45,8 +46,9 @@ class CategoryRepository extends BaseRepository
                                ->all();
 
         return Product::query()
-                      ->whereIn('subcategory_id',$categoryIds)
+                      ->whereIn(ProductContract::SUBCATEGORY_ID,$categoryIds)
                       ->count()
         ;
     }
+
 }

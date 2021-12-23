@@ -48,7 +48,7 @@ class AuthService extends BaseService
             $success         = ['token' => $user->createToken('MyApp')->plainTextToken];
 
             $success['user'] = [
-                'phone_number' => $user->phone_number,
+                'phone' => $user->phone_number,
                 'name'         => $user->name
             ];
             return $success;

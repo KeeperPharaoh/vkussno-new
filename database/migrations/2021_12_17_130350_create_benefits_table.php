@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use \App\Domain\Contracts\ContentContract;
+use \App\Domain\Contracts\BenefitsContract;
 
 class CreateBenefitsTable extends Migration
 {
@@ -14,14 +14,14 @@ class CreateBenefitsTable extends Migration
      */
     public function up()
     {
-        Schema::create(ContentContract::BENEFITS_TABLE, function (Blueprint $table) {
+        Schema::create(BenefitsContract::TABLE, function (Blueprint $table) {
             $table->id();
             $table
-                ->string(ContentContract::BENEFITS_IMAGE)
+                ->string(BenefitsContract::IMAGE)
                 ->nullable()
             ;
             $table
-                ->string(ContentContract::BENEFITS_DESCRIPTION)
+                ->string(BenefitsContract::DESCRIPTION)
                 ->nullable()
             ;
             $table->timestamps();

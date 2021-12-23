@@ -23,7 +23,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            ProductContract::SUBCATEGORY_ID =>  \App\Models\Category::inRandomOrder()->first() ? \App\Models\Category::inRandomOrder()->first()->id : null,
+            ProductContract::SUBCATEGORY_ID =>  \App\Models\Category::query()->where('')->inRandomOrder()->first() ? \App\Models\Category::inRandomOrder()->first()->id : null,
             ProductContract::TITLE =>  $this->faker->title(),
             ProductContract::IMAGE =>  $this->faker->imageUrl(640, 480),
             ProductContract::DESCRIPTION =>  $this->faker->text,

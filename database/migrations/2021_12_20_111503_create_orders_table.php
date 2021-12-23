@@ -1,11 +1,11 @@
 <?php
 
-use App\Domain\Contracts\AboutContract;
+use App\Domain\Contracts\OrderContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domain\Contracts\BenefitsContract;
-class CreateAboutCompaniesTable extends Migration
+
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,11 @@ class CreateAboutCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create(AboutContract::TABLE, function (Blueprint $table) {
+        Schema::create(OrderContract::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->string(AboutContract::TITLE);
-            $table->text(AboutContract::DESCRIPTION);
+            $table->integer(OrderContract::PRODUCT_ID);
+            $table->integer(OrderContract::QUANTITY);
+            $table->integer(OrderContract::CART_ID);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateAboutCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('about_companies');
+        Schema::dropIfExists('orders');
     }
 }

@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domain\Contracts\ContentContract;
+use App\Domain\Contracts\FaqContact;
+
 class CreateFaqsTable extends Migration
 {
     /**
@@ -13,11 +14,11 @@ class CreateFaqsTable extends Migration
      */
     public function up()
     {
-        Schema::create(ContentContract::FAQ, function (Blueprint $table) {
+        Schema::create(FaqContact::TABLE, function (Blueprint $table) {
             $table->id();
 
-            $table->string(ContentContract::FAQ_TITLE);
-            $table->text(ContentContract::FAQ_DESCRIPTION);
+            $table->string(FaqContact::TITLE);
+            $table->text(FaqContact::DESCRIPTION);
 
             $table->timestamps();
         });

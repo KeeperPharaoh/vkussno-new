@@ -59,6 +59,7 @@ class ProductRepository extends BaseRepository
         return $products->paginate(16);
     }
 
+    //ПЕРЕПИСАТЬ
     public function getProductsById($products): array
     {
         $result = [];
@@ -89,6 +90,54 @@ class ProductRepository extends BaseRepository
         return Favorite::query()
             ->where('product_id', $id)
             ->where('user_id', Auth::guard('sanctum')->id())
-            ->first();
+            ->first()
+        ;
     }
+
+    public function getPrice($id)
+    {
+        return Product::query()
+                        ->where('id',$id)
+                        ->select('price')
+                        ->first()
+
+        ;
+    }
+
+    public function getPromotional(): LengthAwarePaginator
+    {
+        return Product::query()
+                        ->where(ProductContract::PROMOTIONAL,true)
+                        ->paginate(16);
+    }
+
+    public function getNew(): LengthAwarePaginator
+    {
+        return Product::query()
+                      ->where(ProductContract::NEW,true)
+                      ->paginate(16);
+    }
+
+    public function getRecommended(): LengthAwarePaginator
+    {
+        return Product::query()
+                      ->where(ProductContract::RECOMMENDED,true)
+                      ->paginate(16);
+    }
+
+
+    public function getCountPromotional(): int
+    {
+        return Product::query()
+                      ->where(ProductContract::PROMOTIONAL,true)
+                      ->count();
+    }
+
+    public function getCountNew(): int
+    {
+        return Product::query()
+                      ->where(ProductContract::NEW,true)
+                      ->count();
+    }
+
 }

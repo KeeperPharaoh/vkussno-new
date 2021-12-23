@@ -42,7 +42,11 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        DB::rollBack();
+        $transactionLevel = DB::transactionLevel();
+
+        for ($i = 0; $i < $transactionLevel; $i++) {
+            DB::rollBack();
+        }
         //словить 500 ошибку
         return parent::render($request, $e);
     }

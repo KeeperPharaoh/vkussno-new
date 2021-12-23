@@ -1,11 +1,11 @@
 <?php
 
-use App\Domain\Contracts\AboutContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domain\Contracts\BenefitsContract;
-class CreateAboutCompaniesTable extends Migration
+use App\Domain\Contracts\TimeOfDeliveryContract;
+
+class CreateTimeOfDeliveriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class CreateAboutCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create(AboutContract::TABLE, function (Blueprint $table) {
+        Schema::create(TimeOfDeliveryContract::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->string(AboutContract::TITLE);
-            $table->text(AboutContract::DESCRIPTION);
+            $table->time(TimeOfDeliveryContract::BEGINNING_TIME);
+            $table->time(TimeOfDeliveryContract::END_TIME);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateAboutCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('about_companies');
+        Schema::dropIfExists('time_of_deliveries');
     }
 }

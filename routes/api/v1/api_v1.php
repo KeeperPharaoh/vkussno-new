@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\FavoriteController;
 use App\Http\Controllers\API\V1\AddressController;
 use App\Http\Controllers\API\V1\ContentController;
+use App\Http\Controllers\CartController;
 
 //Регистрация
 Route::prefix('auth')->group(function (){
@@ -37,6 +38,10 @@ Route::prefix('categories')->group(function () {
     Route::get('{id}/subcategories', [CategoryController::class, 'showSubCategoriesById']);
     Route::get('{id}/products', [ProductController::class, 'showProductsBySubCategoryId']);
     Route::get('{id}/all', [ProductController::class, 'showAllProductsByCategory']);
+
+    Route::get('/promotional', [CategoryController::class, 'promotional']);
+    Route::get('/new', [CategoryController::class, 'new']);
+    Route::get('/recommended', [CategoryController::class, 'recommended']);
 });
 
 //Продукты
@@ -56,4 +61,13 @@ Route::prefix('content')->group(function () {
     Route::get('benefit',[ContentController::class, 'benefit']);
     Route::get('about',[ContentController::class, 'about']);
     Route::get('faq',[ContentController::class, 'faq']);
+});
+
+//Цена за доставку
+Route::get('cart/delivery-charges', [CartController::class, 'getDeliveryCharges']);
+
+//Корзина
+Route::middleware('auth:sanctum')->prefix('cart')->group(function (){
+    Route::get('delivery-time', [CartController::class, 'getTimeDelivery']);
+    Route::post('accept',[CartController::class, 'accept']);
 });
