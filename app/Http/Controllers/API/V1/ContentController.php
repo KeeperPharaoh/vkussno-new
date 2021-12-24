@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BenefitCollection;
+use App\Http\Resources\SliderCollection;
 use App\Models\Slider;
 use App\Services\ContentServices;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class ContentController extends BaseController
     public function slider(): JsonResponse
     {
         $result = $this->contentServices->slider();
-        return $this->sendResponse($result);
+        return $this->sendResponse(new SliderCollection($result));
     }
 
     public function benefit(): JsonResponse
