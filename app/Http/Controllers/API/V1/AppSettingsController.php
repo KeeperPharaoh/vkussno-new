@@ -37,7 +37,7 @@ class AppSettingsController extends BaseController
 
     public function paymentMethods(): JsonResponse
     {
-        $result = $this->appSettingsService->getPaymentMethods;
+        $result = $this->appSettingsService->getPaymentMethods();
         return  $this->sendResponse($result);
     }
 }

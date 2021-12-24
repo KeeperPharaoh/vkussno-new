@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IdRequest;
 use App\Http\Resources\CategoryCollection;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use App\Http\Requests\GetCategoryRequest;
@@ -15,10 +16,15 @@ use \Illuminate\Http\JsonResponse;
 class CategoryController extends BaseController
 {
     public CategoryService $categoryService;
+    public ProductService  $productService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(
+        CategoryService $categoryService,
+        ProductService  $productService
+    )
     {
         $this->categoryService = $categoryService;
+        $this->productService  = $productService;
     }
 
     public function index(): JsonResponse
@@ -46,21 +52,24 @@ class CategoryController extends BaseController
         return $this->sendResponse($result);
     }
 
-    public function promotional(): JsonResponse
+    public function promotional(Request $request): JsonResponse
     {
-        $result = $this->categoryService->promotional();
+        $sort   = $request->sort;
+        $result = $this->productService->promotional($sort);
         return $this->sendResponse($result);
     }
 
-    public function new(): JsonResponse
+    public function new(Request $request): JsonResponse
     {
-        $result = $this->categoryService->new();
+        $sort   = $request->sort;
+        $result = $this->productService->new($sort);
         return $this->sendResponse($result);
     }
 
-    public function recommended(): JsonResponse
+    public function recommended(Request $request): JsonResponse
     {
-        $result = $this->categoryService->recommended();
+        $sort   = $request->sort;
+        $result = $this->productService->recommended($sort);
         return $this->sendResponse($result);
     }
 }

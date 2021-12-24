@@ -78,19 +78,4 @@ class CategoryService extends BaseService
         return $this->categoryRepository->getSubCategory($id);
     }
 
-    public function promotional(): LengthAwarePaginator
-    {
-        return $this->productRepository->getPromotional();
-    }
-
-    public function new(): LengthAwarePaginator
-    {
-        return $this->productRepository->getNew();
-    }
-
-    public function recommended(): LengthAwarePaginator
-    {
-        return $this->productRepository->getRecommended();
-    }
-
 }

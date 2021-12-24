@@ -104,25 +104,38 @@ class ProductRepository extends BaseRepository
         ;
     }
 
-    public function getPromotional(): LengthAwarePaginator
+    public function getPromotional(?string $sort): LengthAwarePaginator
     {
-        return Product::query()
-                        ->where(ProductContract::PROMOTIONAL,true)
-                        ->paginate(16);
+        $products = Product::query()
+                           ->where(ProductContract::PROMOTIONAL,true);
+
+        if (isset($sort)) {
+            $products->orderBy('price', $sort);
+        }
+        return $products->paginate(16);
     }
 
-    public function getNew(): LengthAwarePaginator
+    public function getNew(?string $sort): LengthAwarePaginator
     {
-        return Product::query()
-                      ->where(ProductContract::NEW,true)
-                      ->paginate(16);
+        $products = Product::query()
+                           ->where(ProductContract::NEW,true);
+
+        if (isset($sort)) {
+            $products->orderBy('price', $sort);
+        }
+
+        return $products->paginate(16);
     }
 
-    public function getRecommended(): LengthAwarePaginator
+    public function getRecommended(?string $sort): LengthAwarePaginator
     {
-        return Product::query()
-                      ->where(ProductContract::RECOMMENDED,true)
-                      ->paginate(16);
+        $products = Product::query()
+                           ->where(ProductContract::RECOMMENDED,true);
+
+        if (isset($sort)) {
+            $products->orderBy('price', $sort);
+        }
+        return $products->paginate(16);
     }
 
 

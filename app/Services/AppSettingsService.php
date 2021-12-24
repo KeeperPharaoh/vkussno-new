@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\DeliveryChargerRepositories;
+use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\TimeDeliveryRepositories;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -11,20 +12,22 @@ use Japananimetime\Template\BaseService;
 
 class AppSettingsService extends BaseService
 {
-    private CityRepositories $cityRepositories;
+    private CityRepositories            $cityRepositories;
     private DeliveryChargerRepositories $deliveryChargerRepositories;
     private TimeDeliveryRepositories    $timeDeliveryRepositories;
-
+    private PaymentTypeRepository       $paymentTypeRepository;
     public function __construct(
-        CityRepositories $cityRepositories,
+        CityRepositories            $cityRepositories,
         DeliveryChargerRepositories $deliveryChargerRepositories,
-        TimeDeliveryRepositories    $timeDeliveryRepositories
+        TimeDeliveryRepositories    $timeDeliveryRepositories,
+        PaymentTypeRepository       $paymentTypeRepository
     )
     {
         parent::__construct();
         $this->deliveryChargerRepositories = $deliveryChargerRepositories;
         $this->timeDeliveryRepositories    = $timeDeliveryRepositories;
-        $this->cityRepositories = $cityRepositories;
+        $this->cityRepositories            = $cityRepositories;
+        $this->paymentTypeRepository       = $paymentTypeRepository;
     }
 
     public function city(): Collection
@@ -47,8 +50,8 @@ class AppSettingsService extends BaseService
         return $this->timeDeliveryRepositories->getTimeDelivery();
     }
 
-    public function getPaymentMethods()
+    public function getPaymentMethods(): Collection
     {
-//        return $this->
+        return $this->paymentTypeRepository->all();
     }
 }

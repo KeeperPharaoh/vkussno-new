@@ -40,10 +40,12 @@ class ProductService extends BaseService
     public function showAllProductsByCategory(int $id, ?string $sort): LengthAwarePaginator
     {
         $products = $this->productRepository->showAllProductsByCategory($id,$sort);
+
         foreach ($products as $product) {
             $product->image = env('APP_URL') . '/storage/' . $product->image;
             $product->isFavorite = $this->isFavorite($product->id);
         }
+
         return $products;
     }
 
@@ -62,6 +64,41 @@ class ProductService extends BaseService
             $product->image = env('APP_URL') . '/storage/' . $product->image;
             $product->isFavorite = $this->isFavorite($product->id);
         }
+        return $products;
+    }
+
+    public function promotional($sort): LengthAwarePaginator
+    {
+        $products = $this->productRepository->getPromotional($sort);
+
+        foreach ($products as $product) {
+            $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
+        }
+
+        return $products;
+    }
+
+    public function new($sort): LengthAwarePaginator
+    {
+        $products = $this->productRepository->getNew($sort);
+
+        foreach ($products as $product) {
+            $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
+        }
+        return $products;
+    }
+
+    public function recommended($sort): LengthAwarePaginator
+    {
+        $products = $this->productRepository->getRecommended($sort);
+
+        foreach ($products as $product) {
+            $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
+        }
+
         return $products;
     }
 
