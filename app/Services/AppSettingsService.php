@@ -50,7 +50,7 @@ class AppSettingsService extends BaseService
         return $this->timeDeliveryRepositories->getTimeDelivery();
     }
 
-    public function getPaymentMethods(): Collection
+    public function paymentTypes(): Collection
     {
         return $this->paymentTypeRepository->all();
     }

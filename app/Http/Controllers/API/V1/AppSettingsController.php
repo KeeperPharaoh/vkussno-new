@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PaymentTypeCollection;
+use App\Models\PaymentType;
 use App\Services\AppSettingsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,9 +37,9 @@ class AppSettingsController extends BaseController
         return $this->sendResponse($result);
     }
 
-    public function paymentMethods(): JsonResponse
+    public function paymentTypes(): JsonResponse
     {
-        $result = $this->appSettingsService->getPaymentMethods();
-        return  $this->sendResponse($result);
+        $result = $this->appSettingsService->paymentTypes();
+        return  $this->sendResponse(new PaymentTypeCollection($result));
     }
 }

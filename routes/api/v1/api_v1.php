@@ -75,7 +75,7 @@ Route::prefix('settings')->group(function () {
         Route::get('delivery-time', [AppSettingsController::class, 'getTimeDelivery']);
 
     //Получить способы оплаты
-        Route::get('payment-methods', [AppSettingsController::class, 'paymentMethods']);
+        Route::get('payment-types', [AppSettingsController::class, 'paymentTypes']);
 });
 
 //Корзина
