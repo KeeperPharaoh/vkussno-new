@@ -28,8 +28,8 @@ class CategoryController extends BaseController
         $categories = new CategoryCollection($result['categories']);
 
         $special_categories = [
-            'promotional' => $result['promotional'],
-            'new'         => $result['new']
+             $result['promotional'],
+             $result['new']
         ];
         $data = [
             'special_categories' => $special_categories,
