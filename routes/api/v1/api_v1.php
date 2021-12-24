@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AppSettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\AuthController;
@@ -15,7 +16,7 @@ use App\Http\Controllers\CartController;
 Route::prefix('auth')->group(function (){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);
-    Route::post('logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
+    Route::get('logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 });
 
 //Профиль
@@ -63,11 +64,22 @@ Route::prefix('content')->group(function () {
     Route::get('faq',[ContentController::class, 'faq']);
 });
 
-//Цена за доставку
-Route::get('cart/delivery-charges', [CartController::class, 'getDeliveryCharges']);
+Route::prefix('settings')->group(function () {
+    //Цена за доставку
+        Route::get('delivery-charges', [AppSettingsController::class, 'getDeliveryCharges']);
+
+    //Получить список городов
+        Route::get('city', [AppSettingsController::class, 'city']);
+
+    //Получить время доставки
+        Route::get('delivery-time', [AppSettingsController::class, 'getTimeDelivery']);
+
+    //Получить способы оплаты
+        Route::get('payment-methods', [AppSettingsController::class, 'paymentMethods']);
+});
 
 //Корзина
 Route::middleware('auth:sanctum')->prefix('cart')->group(function (){
-    Route::get('delivery-time', [CartController::class, 'getTimeDelivery']);
     Route::post('accept',[CartController::class, 'accept']);
 });
+

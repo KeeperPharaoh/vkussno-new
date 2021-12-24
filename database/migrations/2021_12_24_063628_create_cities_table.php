@@ -1,11 +1,11 @@
 <?php
 
-use App\Domain\Contracts\PaymentTypeContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domain\Contracts\CityContract;
 
-class CreatePaymentTypesTable extends Migration
+class CreateCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class CreatePaymentTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create(PaymentTypeContract::TABLE, function (Blueprint $table) {
+        Schema::create(CityContract::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->string(PaymentTypeContract::TYPE);
-            $table->string(PaymentTypeContract::IMAGE);
+            $table->string(CityContract::CITY);
+            $table->integer(CityContract::PRICE);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePaymentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_types');
+        Schema::dropIfExists('cities');
     }
 }

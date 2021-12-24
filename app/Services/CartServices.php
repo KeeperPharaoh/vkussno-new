@@ -14,36 +14,15 @@ use Japananimetime\Template\BaseService;
 class CartServices extends BaseService
 {
     private CartRepositories            $cartRepositories;
-    private DeliveryChargerRepositories $deliveryChargerRepositories;
-    private TimeDeliveryRepositories    $timeDeliveryRepositories;
     private ProductRepository           $productRepository;
     public function __construct(
         CartRepositories            $cartRepositories,
-        DeliveryChargerRepositories $deliveryChargerRepositories,
-        TimeDeliveryRepositories    $timeDeliveryRepositories,
         ProductRepository           $productRepository
     )
     {
         parent::__construct();
-
-        $this->deliveryChargerRepositories = $deliveryChargerRepositories;
-        $this->timeDeliveryRepositories    = $timeDeliveryRepositories;
-        $this->productRepository           = $productRepository;
-    }
-
-    public function getDeliveryCharges(): Collection
-    {
-        if (Auth::guard('sanctum')->check()) {
-            $city = Auth::guard('sanctum')->user()->city;
-        }else {
-            $city = "Алматы";
-        }
-        return $this->deliveryChargerRepositories->getPrice($city);
-    }
-
-    public function getTimeDelivery()
-    {
-        return $this->timeDeliveryRepositories->getTimeDelivery();
+        $this->cartRepositories   = $cartRepositories;
+        $this->productRepository  = $productRepository;
     }
 
     public function accept($attributes)

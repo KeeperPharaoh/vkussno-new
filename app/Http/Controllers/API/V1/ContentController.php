@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BenefitCollection;
 use App\Models\Slider;
 use App\Services\ContentServices;
 use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
+
 class ContentController extends BaseController
 {
     public ContentServices $contentServices;
@@ -26,7 +28,7 @@ class ContentController extends BaseController
     public function benefit(): JsonResponse
     {
         $result = $this->contentServices->benefit();
-        return $this->sendResponse($result);
+        return $this->sendResponse(new BenefitCollection($result));
     }
 
     public function about(): JsonResponse

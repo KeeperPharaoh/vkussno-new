@@ -53,12 +53,16 @@ class CategoryService extends BaseService
         $newCount         = $this->productRepository->getCountNew();
 
         $promotional = [
+            'id'    => 777,
             'image' => $promotionalImage,
+            'title' => "Акции",
             'count' => $promotionalCount
             ];
 
         $new = [
+            'id'    => 778,
             'image' => $newImage,
+            'title' => "Новинки",
             'count' => $newCount
         ];
 

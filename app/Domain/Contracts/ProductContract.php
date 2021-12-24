@@ -13,6 +13,7 @@ interface ProductContract
     public const DESCRIPTION    = 'description';
     public const PRICE          = 'price';
     public const OLD_PRICE      = 'old_price';
+
     public const PROMOTIONAL = 'promotional';
     public const NEW         = 'new';
     public const RECOMMENDED = 'recommended';

@@ -11,10 +11,10 @@ use Japananimetime\Template\BaseService;
 
 class ContentServices extends BaseService
 {
-    private SliderRepositories $sliderRepositories;
-    private BenefitsRepositories $benefitsRepositories;
+    private SliderRepositories       $sliderRepositories;
+    private BenefitsRepositories     $benefitsRepositories;
     private AboutCompanyRepositories $aboutCompanyRepositories;
-    private FaqRepositories $faqRepositories;
+    private FaqRepositories          $faqRepositories;
 
     public function __construct(
         SliderRepositories $sliderRepositories,

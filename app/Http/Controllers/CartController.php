@@ -16,18 +16,6 @@ class CartController extends BaseController
         $this->cartServices = $cartServices;
     }
 
-    public function getDeliveryCharges(): JsonResponse
-    {
-        $result = $this->cartServices->getDeliveryCharges();
-        return $this->sendResponse($result);
-    }
-
-    public function getTimeDelivery(): JsonResponse
-    {
-        $result = $this->cartServices->getTimeDelivery();
-        return $this->sendResponse($result);
-    }
-
     public function accept(AcceptCartRequest $request): JsonResponse
     {
         $request = $request->validated();
