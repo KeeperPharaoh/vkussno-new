@@ -54,14 +54,14 @@ class CategoryService extends BaseService
 
         $promotional = [
             'id'    => 777,
-            'image' => $promotionalImage,
+            'image' => env('APP_URL') . '/storage/' . $promotionalImage,
             'title' => "Акции",
             'count' => $promotionalCount
             ];
 
         $new = [
             'id'    => 778,
-            'image' => $newImage,
+            'image' => env('APP_URL') . '/storage/' . $newImage,
             'title' => "Новинки",
             'count' => $newCount
         ];
