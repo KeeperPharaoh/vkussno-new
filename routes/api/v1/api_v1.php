@@ -10,7 +10,7 @@ use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\FavoriteController;
 use App\Http\Controllers\API\V1\AddressController;
 use App\Http\Controllers\API\V1\ContentController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\API\V1\CartController;
 
 //Регистрация
 Route::prefix('auth')->group(function (){
@@ -81,5 +81,6 @@ Route::prefix('settings')->group(function () {
 //Корзина
 Route::middleware('auth:sanctum')->prefix('cart')->group(function (){
     Route::post('accept',[CartController::class, 'accept']);
+    Route::get('history', [CartController::class, 'history']);
 });
 

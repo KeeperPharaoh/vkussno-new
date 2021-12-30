@@ -16,4 +16,12 @@ class TimeDeliveryRepositories extends BaseRepository
     {
         return TimeOfDelivery::all();
     }
+
+    public function getTimeId($id)
+    {
+        return TimeOfDelivery::query()
+                             ->where('id', $id)
+                             ->first()
+        ;
+    }
 }

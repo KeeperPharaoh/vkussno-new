@@ -23,10 +23,15 @@ class FavoriteService extends BaseService
         $this->productRepository  = $productRepository;
     }
 
-    public function showByUserId(): array
+    public function showByUserId()
     {
         $productsId = $this->favoriteRepository->showByUserId();
-        return $this->productRepository->getProductsById($productsId);
+        $products   = $this->productRepository->getProductsById($productsId);
+        foreach ($products as $product) {
+            $product->image = env('APP_URL') . '/storage/' . $product->image;
+        }
+
+        return $products;
     }
 
     public function check(int $id)

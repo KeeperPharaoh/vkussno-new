@@ -9,5 +9,5 @@ interface PromoCodeContract
     public const PROMO        = "promo";
     public const PERCENT      = "percent";
     public const FIRST_BONUS  = "first_bonus_product";
-    public const SECOND_BONUS = "first_bonus_product";
+    public const SECOND_BONUS = "second_bonus_product";
 }

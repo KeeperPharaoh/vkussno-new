@@ -14,6 +14,14 @@ class AddressRepositories extends BaseRepository
         return new Address();
     }
 
+    public function getAddresses($id)
+    {
+        return Address::query()
+            ->where('id', $id)
+            ->first()
+            ;
+    }
+
     public function showUserAddresses()
     {
         return Address::query()

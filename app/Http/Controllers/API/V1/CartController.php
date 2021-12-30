@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
 
+use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AcceptCartRequest;
 use App\Services\CartServices;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CartController extends BaseController
 {
+
     public CartServices $cartServices;
 
     public function __construct(CartServices $cartServices)
@@ -19,7 +22,14 @@ class CartController extends BaseController
     public function accept(AcceptCartRequest $request): JsonResponse
     {
         $request = $request->validated();
-        $result  = $this->cartServices->accept($request);
-        return $this->sendResponse($result);
+        $this->cartServices->accept($request);
+
+        return $this->sendSuccessMessage();
+    }
+
+    public function history(): JsonResponse
+    {
+        $data = $this->cartServices->history();
+        return $this->sendResponse($data);
     }
 }

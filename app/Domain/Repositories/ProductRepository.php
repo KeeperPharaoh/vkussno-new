@@ -60,16 +60,18 @@ class ProductRepository extends BaseRepository
     }
 
     //ПЕРЕПИСАТЬ
-    public function getProductsById($products): array
+    public function getProductsById($products)
     {
-        $result = [];
+        $ids = [];
         foreach ($products as $product) {
-            $data     = Product::query()
-                            ->where('id',$product->product_id)
-                            ->get();
-            $result[] = $data;
+            $ids[] = $product->product_id;
         }
-        return $result;
+
+        return Product::query()
+                      ->whereIn('id', $ids)
+                      ->select('id', 'subcategory_id', 'title', 'image', 'price', 'old_price')
+                      ->get()
+        ;
     }
 
     public function search(?string $search, ?string $sort): LengthAwarePaginator
@@ -138,7 +140,6 @@ class ProductRepository extends BaseRepository
         return $products->paginate(16);
     }
 
-
     public function getCountPromotional(): int
     {
         return Product::query()
@@ -153,4 +154,11 @@ class ProductRepository extends BaseRepository
                       ->count();
     }
 
+    public function getProduct($id)
+    {
+        return Product::query()
+               ->where('id', $id)
+               ->select('id', ProductContract::SUBCATEGORY_ID, ProductContract::TITLE, ProductContract::IMAGE, 'price')
+               ->get();
+    }
 }
