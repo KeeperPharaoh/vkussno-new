@@ -29,6 +29,7 @@ class FavoriteService extends BaseService
         $products   = $this->productRepository->getProductsById($productsId);
         foreach ($products as $product) {
             $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
         }
 
         return $products;
@@ -50,5 +51,15 @@ class FavoriteService extends BaseService
     public function deleteById(int $id)
     {
         return $this->favoriteRepository->deleteById($id);
+    }
+
+
+    public function isFavorite(int $id): bool
+    {
+        if (Auth::guard('sanctum')->check()) {
+            $status = $this->productRepository->isFavorite($id);
+            return !empty($status);
+        }
+        return false;
     }
 }
