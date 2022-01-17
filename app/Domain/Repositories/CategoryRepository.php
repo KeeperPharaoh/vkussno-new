@@ -6,33 +6,26 @@ namespace App\Domain\Repositories;
 use App\Domain\Contracts\CategoryContract;
 use App\Domain\Contracts\ProductContract;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Models\Category;
-use Ramsey\Collection\Collection;
 
 class CategoryRepository extends BaseRepository
 {
 
-    public function model(): Category
+    public function model(): string
     {
-        return new Category();
+        return Category::class;
     }
 
-    public function getCategory()
+    /**
+     * Boot up the repository, pushing criteria
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function boot()
     {
-        return Category::query()
-                       ->where(CategoryContract::PARENT_ID, null)
-                       ->select('id',CategoryContract::IMAGE,CategoryContract::TITLE)
-                       ->get();
-    }
-
-    public function getSubCategory(int $id)
-    {
-        return Category::query()
-                        ->where(CategoryContract::PARENT_ID,$id)
-                        ->select('id',CategoryContract::TITLE)
-                        ->get();
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     public function getCount(int $id): int

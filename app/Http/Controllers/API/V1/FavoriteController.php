@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Services\FavoriteService;
 use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends BaseController
 {
@@ -21,31 +19,45 @@ class FavoriteController extends BaseController
     public function show(): JsonResponse
     {
         $result = $this->favoriteService->showByUserId();
+
         return $this->sendResponse($result);
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function add(Request $request): JsonResponse
     {
-        $id     = $request->id;
+        try {
+            $id    = $request->id;
+            $check = $this->favoriteService->check($id);
 
-        $check  = $this->favoriteService->check($id);
-        if ($check) {
-            return $this->sendError('Товар уже в избранном');
+            if (!$check) {
+                return $this->sendError('Товар уже в избранном');
+            }
+
+            $this->favoriteService->add($id);
+
+        } catch (\Exception $exception) {
+            return $this->sendError("Товара не существует");
         }
-
-        $this->favoriteService->add($id);
 
         return $this->sendSuccessMessage();
     }
 
     public function delete(Request $request): JsonResponse
     {
-        $id = $request->id;
-        $check  = $this->favoriteService->check($id);
-        if (!isset($check)) {
+        $id    = $request->id;
+        $check = $this->favoriteService->check($id);
+
+        if ($check) {
             return $this->sendError('Товара нету в избранном');
         }
+
         $this->favoriteService->deleteById($id);
+
         return $this->sendSuccessMessage('Товар успешно удален');
     }
 }

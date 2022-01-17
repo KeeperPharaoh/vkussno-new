@@ -3,6 +3,7 @@
 namespace App\Domain\Repositories;
 
 use App\Models\TimeOfDelivery;
+use Carbon\Carbon;
 use Japananimetime\Template\BaseRepository;
 
 class TimeDeliveryRepositories extends BaseRepository
@@ -12,16 +13,19 @@ class TimeDeliveryRepositories extends BaseRepository
         return new TimeOfDelivery();
     }
 
-    public function getTimeDelivery()
-    {
-        return TimeOfDelivery::all();
-    }
-
     public function getTimeId($id)
     {
         return TimeOfDelivery::query()
                              ->where('id', $id)
                              ->first()
         ;
+    }
+
+    public function getCurrentTimeDelivery()
+    {
+        dd(Carbon::now());
+
+        $cart = TimeOfDelivery::query()
+                                ->where();
     }
 }

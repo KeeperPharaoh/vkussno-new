@@ -5,7 +5,7 @@ namespace App\Domain\Contracts;
 interface ProductContract
 {
 
-    public const TABLE   = 'products';
+    public const TABLE = 'products';
 
     public const SUBCATEGORY_ID = 'subcategory_id';
     public const TITLE          = 'title';
@@ -13,8 +13,9 @@ interface ProductContract
     public const DESCRIPTION    = 'description';
     public const PRICE          = 'price';
     public const OLD_PRICE      = 'old_price';
-
-    public const PROMOTIONAL = 'promotional';
-    public const NEW         = 'new';
-    public const RECOMMENDED = 'recommended';
+    public const PROMOTIONAL    = 'promotional';
+    public const NEW            = 'new';
+    public const RECOMMENDED    = 'recommended';
+    public const ORDER          = 'order';
+    public const REMAINDER      = 'remainder';
 }

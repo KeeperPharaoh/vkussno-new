@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
 use App\Services\AddressServices;
-use Illuminate\Http\Request;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
 
 class AddressController extends BaseController
 {
@@ -25,10 +23,13 @@ class AddressController extends BaseController
         return $this->sendResponse($result);
     }
 
+    /**
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function add(AddressRequest $request): JsonResponse
     {
-        $request = $request->validated();
-        $this->addressServices->add($request);
+        $attributes = $request->validated();
+        $this->addressServices->add($attributes);
         return $this->sendSuccessMessage();
     }
 
@@ -39,9 +40,8 @@ class AddressController extends BaseController
         return $this->sendSuccessMessage($result);
     }
 
-    public function delete(Request $request): JsonResponse
+    public function delete($id): JsonResponse
     {
-        $id = $request->id;
         $result = $this->addressServices->deleteAddresses($id);
 
         if (!$result) {

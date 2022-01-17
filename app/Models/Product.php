@@ -22,6 +22,8 @@ class Product extends Model
         ProductContract::PROMOTIONAL,
         ProductContract::NEW,
         ProductContract::RECOMMENDED,
+        ProductContract::REMAINDER,
+        ProductContract::ORDER,
         'deleted_at',
         'created_at',
         'updated_at',

@@ -2,7 +2,9 @@
 
 namespace App\Domain\Contracts;
 
-interface AddressContract
+use Prettus\Repository\Contracts\RepositoryInterface;
+
+interface AddressContract extends RepositoryInterface
 {
     public const TABLE = 'addresses';
 

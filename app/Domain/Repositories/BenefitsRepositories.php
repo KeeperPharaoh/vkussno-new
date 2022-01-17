@@ -3,12 +3,12 @@
 namespace App\Domain\Repositories;
 
 use App\Models\Benefits;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class BenefitsRepositories extends BaseRepository
 {
-    public function model(): Benefits
+    public function model(): string
     {
-        return new Benefits();
+        return Benefits::class;
     }
 }

@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\IdRequest;
 use App\Http\Resources\CategoryCollection;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use App\Services\CategoryService;
-use App\Http\Requests\GetCategoryRequest;
-use App\Http\Requests\CreateCategoryRequest;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends BaseController
 {
@@ -29,7 +25,6 @@ class CategoryController extends BaseController
 
     public function index(): JsonResponse
     {
-        $data = [];
         $result = $this->categoryService->index();
         $categories = new CategoryCollection($result['categories']);
 
@@ -45,6 +40,7 @@ class CategoryController extends BaseController
         return $this->sendResponse($data);
     }
 
+    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
     public function showSubCategoriesById(Request $request): JsonResponse
     {
         $id = $request->id;
@@ -52,6 +48,10 @@ class CategoryController extends BaseController
         return $this->sendResponse($result);
     }
 
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function promotional(Request $request): JsonResponse
     {
         $sort   = $request->sort;
@@ -59,6 +59,10 @@ class CategoryController extends BaseController
         return $this->sendResponse($result);
     }
 
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @noinspection PhpUndefinedFieldInspection
+     */
     public function new(Request $request): JsonResponse
     {
         $sort   = $request->sort;
@@ -66,6 +70,10 @@ class CategoryController extends BaseController
         return $this->sendResponse($result);
     }
 
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @noinspection PhpUndefinedFieldInspection
+     */
     public function recommended(Request $request): JsonResponse
     {
         $sort   = $request->sort;

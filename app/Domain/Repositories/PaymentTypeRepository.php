@@ -3,14 +3,15 @@
 namespace App\Domain\Repositories;
 
 use App\Models\PaymentType;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class PaymentTypeRepository extends BaseRepository
 {
-    public function model(): PaymentType
+    public function model(): string
     {
-        return new PaymentType();
+        return PaymentType::class;
     }
+
 
     public function getType($id)
     {

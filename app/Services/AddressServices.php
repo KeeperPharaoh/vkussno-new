@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Domain\Contracts\AddressContract;
 use App\Domain\Repositories\AddressRepositories;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Japananimetime\Template\BaseService;
-use Symfony\Component\HttpFoundation\Response;
 
 class AddressServices extends BaseService
 {
@@ -20,9 +21,14 @@ class AddressServices extends BaseService
 
     public function showUserAddresses()
     {
-        return $this->addressRepositories->showUserAddresses();
+        return $this->addressRepositories->findWhere([
+            AddressContract::USER_ID => Auth::id()
+            ]);
     }
 
+    /**
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function add(array $attributes)
     {
         DB::beginTransaction();
@@ -35,19 +41,19 @@ class AddressServices extends BaseService
     {
         try {
             DB::beginTransaction();
-            $this->addressRepositories->updateAddresses($id,$attributes);
+            $this->addressRepositories->update($attributes,$id);
             DB::commit();
 
             return 'Операция прошла успешно';
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             return $exception->getMessage();
         }
     }
 
-    public function deleteAddresses(int $id)
+    public function deleteAddresses(int $id): int
     {
-        return $this->addressRepositories->deleteAddresses($id);
+        return $this->addressRepositories->delete($id);
     }
 }

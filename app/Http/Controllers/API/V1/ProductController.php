@@ -1,17 +1,12 @@
-<?php
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCollection;
-use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
-use App\Http\Requests\GetProductRequest;
-use App\Http\Requests\CreateProductRequest;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
+use Prettus\Repository\Exceptions\RepositoryException;
 
 class ProductController extends BaseController
 {
@@ -22,14 +17,25 @@ class ProductController extends BaseController
         $this->productService = $productService;
     }
 
+    /** @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpPossiblePolymorphicInvocationInspection
+     */
     public function showProductsBySubCategoryId(Request $request): JsonResponse
     {
         $id    = $request->id;
         $sort  = $request->sort;
 
-        $result = $this->productService->showProductsBySubCategoryId($id,$sort);
+        try {
+            $result = $this->productService->showProductsBySubCategoryId($id, $sort);
+        } catch (RepositoryException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+        }
 
-        return $this->sendResponse($result);
+        if (isset($result)) {
+            return $this->sendResponse($result);
+        }else {
+            return $this->sendError('Произошла ошибка', 418);
+        }
     }
 
     public function showAllProductsByCategory(Request $request): JsonResponse
@@ -37,7 +43,12 @@ class ProductController extends BaseController
         $id = $request->id;
         $sort  = $request->sort;
 
-        $result = $this->productService->showAllProductsByCategory($id,$sort);
+        try {
+            $result = $this->productService->showAllProductsByCategory($id, $sort);
+        } catch (RepositoryException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+
+        }
 
         return $this->sendResponse($result);
     }
@@ -50,6 +61,7 @@ class ProductController extends BaseController
         return $this->sendResponse($result);
     }
 
+    /** @noinspection PhpUndefinedFieldInspection */
     public function search(Request $request): JsonResponse
     {
         $search = $request->find;

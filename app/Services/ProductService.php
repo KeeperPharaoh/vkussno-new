@@ -2,12 +2,19 @@
 
 namespace App\Services;
 
+use App\Criteria\NewCriteria;
+use App\Criteria\PromotionalCriteria;
+use App\Criteria\RecommendedCriteria;
+use App\Criteria\SubCategoryByCategoryCriteriaCriteria;
+use App\Criteria\SubCategoryCriteriaCriteria;
+use App\Domain\Contracts\CategoryContract;
+use App\Domain\Contracts\FavoriteContract;
 use App\Domain\Contracts\ProductContract;
+use App\Domain\Repositories\CategoryRepository;
+use App\Domain\Repositories\FavoriteRepository;
 use App\Domain\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 use Japananimetime\Template\BaseService;
-use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService extends BaseService
@@ -16,44 +23,57 @@ class ProductService extends BaseService
      * @var \App\Domain\Repositories\ProductRepository
      */
     private ProductRepository $productRepository;
+    private CategoryRepository $categoryRepository;
+    private FavoriteRepository $favoriteRepository;
+    /**
+     * UserService constructor.
+     */
+    public function __construct(
+        ProductRepository  $productRepository,
+        CategoryRepository $categoryRepository,
+        FavoriteRepository $favoriteRepository
+    ) {
+        parent::__construct();
+        $this->categoryRepository = $categoryRepository;
+        $this->productRepository  = $productRepository;
+        $this->favoriteRepository = $favoriteRepository;
+    }
 
     /**
-    * UserService constructor.
-    */
-    public function __construct(ProductRepository $productRepository) {
-        parent::__construct();
-        $this->productRepository = $productRepository;
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function showProductsBySubCategoryId(int $id, ?string $sort)
+    {
+        $this->productRepository->pushCriteria(new SubCategoryCriteriaCriteria($id));
+
+        return $this->extracted($sort);
     }
 
-    public function showProductsBySubCategoryId(int $id, ?string $sort): LengthAwarePaginator
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function showAllProductsByCategory(int $id, ?string $sort)
     {
-        $products = $this->productRepository->showProductsBySubCategoryId($id,$sort);
+        $ids        = [];
+        $categories = $this->categoryRepository->findWhere([
+                                                               CategoryContract::PARENT_ID => $id,
+                                                           ]);
 
-        foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
+        foreach ($categories as $category) {
+            $ids [] = $category->id;
         }
 
-        return $products;
+        $this->productRepository->pushCriteria(new SubCategoryByCategoryCriteriaCriteria($ids));
+
+        return $this->extracted($sort);
     }
 
-    public function showAllProductsByCategory(int $id, ?string $sort): LengthAwarePaginator
+    public function getProductById(int $id)
     {
-        $products = $this->productRepository->showAllProductsByCategory($id,$sort);
-
-        foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
-        }
-
-        return $products;
-    }
-
-    public function getProductById(int $id): ?Model
-    {
-        $result = $this->productRepository->show($id);
-        $result->image = env('APP_URL') . '/storage/' . $result->image;
+        $result             = $this->productRepository->find($id);
+        $result->image      = env('APP_URL') . '/storage/' . $result->image;
         $result->isFavorite = $this->isFavorite($result->id);
+
         return $result;
     }
 
@@ -61,53 +81,77 @@ class ProductService extends BaseService
     {
         $products = $this->productRepository->search($search, $sort);
         foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
+            $product->image      = env('APP_URL') . '/storage/' . $product->image;
             $product->isFavorite = $this->isFavorite($product->id);
         }
+
         return $products;
     }
 
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function promotional($sort): LengthAwarePaginator
     {
-        $products = $this->productRepository->getPromotional($sort);
+        $this->productRepository->pushCriteria(new PromotionalCriteria());
 
-        foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
-        }
-
-        return $products;
+        return $this->extracted($sort);
     }
 
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function new($sort): LengthAwarePaginator
     {
-        $products = $this->productRepository->getNew($sort);
+        $this->productRepository->pushCriteria(new NewCriteria());
 
-        foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
-        }
-        return $products;
+        return $this->extracted($sort);
     }
 
+    /**
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function recommended($sort): LengthAwarePaginator
     {
-        $products = $this->productRepository->getRecommended($sort);
+        $this->productRepository->pushCriteria(new RecommendedCriteria());
 
-        foreach ($products as $product) {
-            $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
-        }
-
-        return $products;
+        return $this->extracted($sort);
     }
 
     public function isFavorite(int $id): bool
     {
-        if (Auth::guard('sanctum')->check()) {
-            $status = $this->productRepository->isFavorite($id);
+        if (Auth::guard('sanctum')
+                ->check()) {
+            $status = $this->favoriteRepository->findWhere([
+                                                               FavoriteContract::PRODUCT_ID => $id,
+                                                               FavoriteContract::USER_ID    => Auth::guard('sanctum')
+                                                                   -> id(),
+                                                           ])->first();
             return !empty($status);
         }
         return false;
+    }
+
+    /**
+     * @param string|null $sort
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     */
+    public function extracted(?string $sort)
+    {
+        if ($sort) {
+            $products = $this->productRepository->orderBy('price', $sort)
+                                                ->paginate(16);
+        } else {
+            $products = $this->productRepository->orderBy('order', 'ASC')
+                                                ->paginate(16);
+        }
+
+        foreach ($products as $product) {
+            $product->image      = env('APP_URL') . '/storage/' . $product->image;
+            $product->isFavorite = $this->isFavorite($product->id);
+        }
+
+        return $products;
     }
 }

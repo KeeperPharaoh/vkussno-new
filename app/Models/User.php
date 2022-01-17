@@ -20,7 +20,9 @@ class User extends \TCG\Voyager\Models\User
             UserContract::PHONE,
             UserContract::PASSWORD,
             UserContract::SUBSCRIPTION,
-            UserContract::BONUS
+            UserContract::BONUS,
+            UserContract::LANGUAGE,
+            UserContract::CITY
     ];
 
     protected $hidden   = [

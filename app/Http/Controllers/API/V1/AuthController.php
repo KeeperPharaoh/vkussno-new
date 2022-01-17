@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends BaseController
 {
@@ -30,7 +26,6 @@ class AuthController extends BaseController
     public function login(LoginRequest $request): JsonResponse
     {
         $result = $this->authService->login($request->validated());
-
         if (!$result) {
             return $this->sendError('Неверный номер или пароль',403);
         }
@@ -40,7 +35,7 @@ class AuthController extends BaseController
 
     public function logout(): JsonResponse
     {
-        $result = $this->authService->logout();
+        $this->authService->logout();
         return response()->json([
             'message'   => 'Операция прошла успешно'
             ]);

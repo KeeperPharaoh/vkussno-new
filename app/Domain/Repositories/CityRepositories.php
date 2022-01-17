@@ -3,12 +3,12 @@
 namespace App\Domain\Repositories;
 
 use App\Models\City;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class CityRepositories extends BaseRepository
 {
-    public function model(): City
+    public function model(): string
     {
-       return new City();
+        return City::class;
     }
 }

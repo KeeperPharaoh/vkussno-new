@@ -4,21 +4,12 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Contracts\DeliveryContract;
 use App\Models\Delivery;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class DeliveryChargerRepositories extends BaseRepository
 {
-    public function model(): Delivery
+    public function model(): string
     {
-        return new Delivery();
-    }
-
-    public function getPrice($city)
-    {
-        return Delivery::query()
-            ->where(DeliveryContract::CITY, $city)
-            ->select(DeliveryContract::PRICE)
-            ->get()
-        ;
+        return Delivery::class;
     }
 }

@@ -3,12 +3,12 @@
 namespace App\Domain\Repositories;
 
 use App\Models\Faq;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class FaqRepositories extends BaseRepository
 {
-    public function model(): Faq
+    public function model(): string
     {
-        return new Faq();
+        return Faq::class;
     }
 }

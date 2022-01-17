@@ -3,17 +3,12 @@
 namespace App\Domain\Repositories;
 
 use App\Models\SpecialCategory;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class SpecialCategoryRepositories extends BaseRepository
 {
-    public function model(): SpecialCategory
+    public function model(): string
     {
-        return new SpecialCategory();
-    }
-
-    public function first()
-    {
-        return SpecialCategory::query()->first();
+        return SpecialCategory::class;
     }
 }

@@ -46,10 +46,14 @@ class AuthService extends BaseService
         if(Auth::attempt([UserContract::PHONE => $phone, UserContract::PASSWORD => $password])) {
             $user            = Auth::user();
             $success         = ['token' => $user->createToken('MyApp')->plainTextToken];
-
             $success['user'] = [
-                'phone' => $user->phone_number,
-                'name'         => $user->name
+                'id'        => $user->id,
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'phone'     => $user->phone,
+                'city'      => $user->city,
+                'language'  => $user->language,
+                'bonus'     => $user->bonus
             ];
             return $success;
         }

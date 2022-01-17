@@ -16,7 +16,7 @@ class CartRepositories extends BaseRepository
         return new Cart();
     }
 
-    public function accept($payment, $address, $totalSum, $user, $comment)
+    public function accept($payment, $address, $totalSum, $user, $comment, $time)
     {
         DB::beginTransaction();
         $cart = Cart::query()
@@ -29,7 +29,7 @@ class CartRepositories extends BaseRepository
                 CartContract::APARTMENT  => $address->apartment,
                 CartContract::ENTRANCE   => $address->entrance,
                 CartContract::FLOOR      => $address->floor,
-                CartContract::TIME       => 0,
+                CartContract::TIME       => $time,
                 CartContract::COMMENT    => $comment
                 ]);
         DB::commit();

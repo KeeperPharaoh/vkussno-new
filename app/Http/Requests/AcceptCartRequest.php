@@ -25,12 +25,12 @@ class AcceptCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_type'  => '',
-            'delivery-time' => '',
+            'payment_type'  => 'required',
+            'delivery_time' => 'required',
             'promo_code'    => '',
-            'address'       => '',
+            'address'       => 'required',
             'comment'       => '',
-            'bonus'         => '',
+            'bonus'         => 'required',
             'data'          => 'array',
             '.*.id'         => 'required|integer|exists:products',
             '.*.quantity'   => 'required|integer',

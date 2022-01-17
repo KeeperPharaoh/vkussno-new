@@ -10,5 +10,5 @@ interface TimeOfDeliveryContract
     public const END_TIME        = 'end_time';
     public const COUNTER         = 'counter';
     public const MAX_COUNTER     = 'max_counter';
-
+    public const BLOCK           = 'block';
 }

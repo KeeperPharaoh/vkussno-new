@@ -4,47 +4,23 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Contracts\AddressContract;
 use App\Models\Address;
-use Illuminate\Support\Facades\Auth;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
-class AddressRepositories extends BaseRepository
+class AddressRepositories extends BaseRepository implements AddressContract
 {
-    public function model(): Address
+    public function model(): string
     {
-        return new Address();
+        return Address::class;
     }
 
-    public function getAddresses($id)
+    /**
+     * Boot up the repository, pushing criteria
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function boot()
     {
-        return Address::query()
-            ->where('id', $id)
-            ->first()
-            ;
-    }
-
-    public function showUserAddresses()
-    {
-        return Address::query()
-            ->where(AddressContract::USER_ID, Auth::id())
-            ->get()
-            ;
-    }
-
-    public function updateAddresses(int $id, array $data)
-    {
-        return Address::query()
-                        ->find($id)
-                        ->update($data);
-    }
-
-    public function deleteAddresses(int $id)
-    {
-        $result = Address::query()
-                         ->find($id)
-            ;
-        if (!isset($result)) {
-            return false;
-        }
-        return $result->delete();
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Domain\Contracts;
 
-interface FavoriteContract
+use Prettus\Repository\Contracts\RepositoryInterface;
+
+interface FavoriteContract extends RepositoryInterface
 {
     public const TABLE   = 'favorites';
 

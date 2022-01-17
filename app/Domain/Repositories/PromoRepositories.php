@@ -3,12 +3,12 @@
 namespace App\Domain\Repositories;
 
 use App\Models\PromoCode;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class PromoRepositories extends BaseRepository
 {
-    public function model(): PromoCode
+    public function model(): string
     {
-        return new PromoCode();
+        return PromoCode::class;
     }
 }

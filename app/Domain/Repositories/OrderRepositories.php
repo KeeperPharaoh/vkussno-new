@@ -5,13 +5,13 @@ namespace App\Domain\Repositories;
 use App\Domain\Contracts\OrderContract;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class OrderRepositories extends BaseRepository
 {
-    public function model(): Order
+    public function model(): string
     {
-        return new Order();
+        return Order::class;
     }
 
     public function accept($cart, $product)

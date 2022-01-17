@@ -5,39 +5,23 @@ namespace App\Domain\Repositories;
 use App\Domain\Contracts\FavoriteContract;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
-class FavoriteRepository extends BaseRepository
+class FavoriteRepository extends BaseRepository implements FavoriteContract
 {
-    public function model(): Favorite
+    public function model(): string
     {
-        return new Favorite();
+        return Favorite::class;
     }
 
-    public function showByUserId()
+    /**
+     * Boot up the repository, pushing criteria
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function boot()
     {
-        return Favorite::query()
-            ->where(FavoriteContract::USER_ID, Auth::id())
-            ->select(FavoriteContract::PRODUCT_ID)
-            ->get()
-        ;
-    }
-
-    public function check(int $id)
-    {
-        return Favorite::query()
-            ->where(FavoriteContract::USER_ID, Auth::id())
-            ->where(FavoriteContract::PRODUCT_ID,$id)
-            ->first()
-        ;
-    }
-
-    public function deleteById(int $id)
-    {
-        return Favorite::query()
-                        ->where(FavoriteContract::USER_ID, Auth::id())
-                        ->where(FavoriteContract::PRODUCT_ID,$id)
-                       ->delete()
-        ;
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 }

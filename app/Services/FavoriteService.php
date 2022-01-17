@@ -25,22 +25,39 @@ class FavoriteService extends BaseService
 
     public function showByUserId()
     {
-        $productsId = $this->favoriteRepository->showByUserId();
-        $products   = $this->productRepository->getProductsById($productsId);
+        $ids = [];
+        $productsIds = $this->favoriteRepository->findWhere([
+            FavoriteContract::USER_ID => Auth::id()
+            ]);
+
+        foreach ($productsIds as $productsId) {
+            $ids[] = $productsId->product_id;
+        }
+
+        $products   = $this->productRepository->findWhereIn('id',$ids);
+
         foreach ($products as $product) {
             $product->image = env('APP_URL') . '/storage/' . $product->image;
-            $product->isFavorite = $this->isFavorite($product->id);
+            $product->isFavorite = true;
         }
 
         return $products;
     }
 
-    public function check(int $id)
+    public function check(int $id): bool
     {
-        return $this->favoriteRepository->check($id);
+        $status = $this->favoriteRepository->findWhere([
+                       FavoriteContract::USER_ID    => Auth::id(),
+                       FavoriteContract::PRODUCT_ID => $id,
+              ]);
+
+        return $status->isEmpty();
     }
 
-    public function add(int $id): \Illuminate\Database\Eloquent\Model
+    /**
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function add(int $id)
     {
         return $this->favoriteRepository->create([
             FavoriteContract::USER_ID    => Auth::id(),
@@ -48,18 +65,11 @@ class FavoriteService extends BaseService
             ]);
     }
 
-    public function deleteById(int $id)
+    public function deleteById(int $id): int
     {
-        return $this->favoriteRepository->deleteById($id);
-    }
-
-
-    public function isFavorite(int $id): bool
-    {
-        if (Auth::guard('sanctum')->check()) {
-            $status = $this->productRepository->isFavorite($id);
-            return !empty($status);
-        }
-        return false;
+        return $this->favoriteRepository->deleteWhere([
+                      FavoriteContract::USER_ID    => Auth::id(),
+                      FavoriteContract::PRODUCT_ID => $id,
+                 ]);
     }
 }
