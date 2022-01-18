@@ -20,6 +20,7 @@ class Cart extends Model
         CartContract::PHONE,
         CartContract::STATUS,
         CartContract::ADDRESS,
-        CartContract::APARTMENT
+        CartContract::APARTMENT,
+        CartContract::CITY
     ];
 }

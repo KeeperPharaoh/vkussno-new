@@ -37,4 +37,14 @@ class UserController extends BaseController
     {
 
     }
+
+    public function changeCity(int $id): JsonResponse
+    {
+        $result = $this->userService->changeCity($id);
+        if ($result){
+            return $this->sendSuccessMessage("Операция прошла успешно");
+        } else {
+            return $this->sendError('Произошла ошибка');
+        }
+    }
 }

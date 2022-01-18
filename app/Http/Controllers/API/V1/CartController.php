@@ -22,9 +22,7 @@ class CartController extends BaseController
     public function accept(AcceptCartRequest $request): JsonResponse
     {
         $request = $request->validated();
-        $this->cartServices->accept($request);
-
-        return $this->sendSuccessMessage();
+        return $this->cartServices->accept($request);
     }
 
     public function history(): JsonResponse

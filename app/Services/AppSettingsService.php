@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Domain\Contracts\CityContract;
 use App\Domain\Contracts\DeliveryContract;
 use App\Domain\Repositories\CityRepositories;
-use App\Domain\Repositories\DeliveryChargerRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\TimeDeliveryRepositories;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,18 +14,15 @@ use Japananimetime\Template\BaseService;
 class AppSettingsService extends BaseService
 {
     private CityRepositories $cityRepositories;
-    private DeliveryChargerRepositories $deliveryChargerRepositories;
     private TimeDeliveryRepositories $timeDeliveryRepositories;
     private PaymentTypeRepository $paymentTypeRepository;
 
     public function __construct(
         CityRepositories            $cityRepositories,
-        DeliveryChargerRepositories $deliveryChargerRepositories,
         TimeDeliveryRepositories    $timeDeliveryRepositories,
         PaymentTypeRepository       $paymentTypeRepository
     ) {
         parent::__construct();
-        $this->deliveryChargerRepositories = $deliveryChargerRepositories;
         $this->timeDeliveryRepositories    = $timeDeliveryRepositories;
         $this->cityRepositories            = $cityRepositories;
         $this->paymentTypeRepository       = $paymentTypeRepository;
@@ -41,9 +38,10 @@ class AppSettingsService extends BaseService
         $city = Auth::guard('sanctum')
                     ->check() ? Auth::guard('sanctum')
                                     ->user()->city : "Алматы";
-        return $this->deliveryChargerRepositories->findWhere([
-                                                                 DeliveryContract::CITY => $city,
-                                                             ]);
+
+        return $this->cityRepositories->findWhere([
+                                                      CityContract::CITY => $city,
+                                                  ]);
     }
 
     public function getTimeDelivery(): Collection

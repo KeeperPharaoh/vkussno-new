@@ -2,8 +2,6 @@
 
 namespace App\Domain\Repositories;
 
-
-use App\Domain\Contracts\ProductContract;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

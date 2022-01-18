@@ -8,4 +8,6 @@ interface CityContract
 
     public const CITY  = 'city';
     public const PRICE = 'price';
+    public const FREE  = "free";
+
 }

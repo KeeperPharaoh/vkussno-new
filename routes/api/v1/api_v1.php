@@ -22,6 +22,7 @@ Route::prefix('auth')->group(function (){
 Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
     Route::get('get', [UserController::class,'get']);
     Route::put('update', [UserController::class,'update']);
+    Route::get('change-city/{id}', [UserController::class, 'changeCity']);
 });
 
 //Адресс
@@ -66,10 +67,8 @@ Route::prefix('content')->group(function () {
 Route::prefix('settings')->group(function () {
     //Цена за доставку
         Route::get('delivery-charges', [AppSettingsController::class, 'getDeliveryCharges']);
-
     //Получить список городов
         Route::get('city', [AppSettingsController::class, 'city']);
-
     //Получить время доставки
         Route::get('delivery-time', [AppSettingsController::class, 'getTimeDelivery']);
     //Получить текущие время доставки

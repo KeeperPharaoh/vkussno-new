@@ -15,9 +15,12 @@ class CreateCitiesTable extends Migration
     public function up()
     {
         Schema::create(CityContract::TABLE, function (Blueprint $table) {
+            Schema::dropIfExists('cities');
+            Schema::dropIfExists('deliveries');
             $table->id();
             $table->string(CityContract::CITY);
             $table->integer(CityContract::PRICE);
+            $table->integer(CityContract::FREE);
             $table->timestamps();
         });
     }

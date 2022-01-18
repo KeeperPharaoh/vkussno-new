@@ -4,21 +4,13 @@ namespace App\Domain\Repositories;
 
 use App\Models\TimeOfDelivery;
 use Carbon\Carbon;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class TimeDeliveryRepositories extends BaseRepository
 {
-    public function model(): TimeOfDelivery
+    public function model(): string
     {
-        return new TimeOfDelivery();
-    }
-
-    public function getTimeId($id)
-    {
-        return TimeOfDelivery::query()
-                             ->where('id', $id)
-                             ->first()
-        ;
+        return TimeOfDelivery::class;
     }
 
     public function getCurrentTimeDelivery()

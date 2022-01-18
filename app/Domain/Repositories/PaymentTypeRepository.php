@@ -12,14 +12,4 @@ class PaymentTypeRepository extends BaseRepository
         return PaymentType::class;
     }
 
-
-    public function getType($id)
-    {
-        return PaymentType::query()
-                        ->where('id',$id)
-                        ->select('type')
-                        ->first()
-            ;
-
-    }
 }

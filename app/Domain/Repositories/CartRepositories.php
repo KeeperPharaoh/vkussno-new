@@ -4,21 +4,20 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Contracts\CartContract;
 use App\Models\Cart;
-use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Japananimetime\Template\BaseRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 class CartRepositories extends BaseRepository
 {
-    public function model(): Cart
+    public function model(): string
     {
-        return new Cart();
+        return Cart::class;
     }
 
-    public function accept($payment, $address, $totalSum, $user, $comment, $time)
+
+    public function accept($payment, $address, $totalSum, $user, $comment, $time, $city)
     {
-        DB::beginTransaction();
         $cart = Cart::query()
             ->create([
                 CartContract::USER       => $user->id,
@@ -30,10 +29,9 @@ class CartRepositories extends BaseRepository
                 CartContract::ENTRANCE   => $address->entrance,
                 CartContract::FLOOR      => $address->floor,
                 CartContract::TIME       => $time,
-                CartContract::COMMENT    => $comment
+                CartContract::COMMENT    => $comment,
+                CartContract::CITY       => $city
                 ]);
-        DB::commit();
-
         return $cart->id;
     }
 

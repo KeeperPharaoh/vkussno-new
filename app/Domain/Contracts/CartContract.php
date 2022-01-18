@@ -11,6 +11,7 @@ interface CartContract
     public const STATUS    = 'status';
 
     public const PHONE     = 'phone';
+    public const CITY      = 'city';
     public const ADDRESS   = 'addresses';
     public const ENTRANCE  = 'entrance';
     public const FLOOR     = 'floor';
