@@ -63,11 +63,14 @@ class AppSettingsService extends BaseService
     {
         $results = $this->paymentTypeRepository->all();
         foreach ($results as $result) {
+
             $image = $result->image;
             $image = json_decode($image);
             $image = $image[0]->download_link;
             $result->image =  $image;
+
+            $result->status = true;
         }
-        return $this->paymentTypeRepository->all();
+        return $results;
     }
 }

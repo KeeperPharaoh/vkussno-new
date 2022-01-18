@@ -28,7 +28,10 @@ class AppSettingsController extends BaseController
     public function getDeliveryCharges(): JsonResponse
     {
         $result = $this->appSettingsService->getDeliveryCharges();
-        return $this->sendResponse($result);
+        return $this->sendResponse([
+                        'price' => $result[0]->price,
+                        'free'  => $result[0]->free
+                                   ]);
     }
 
     public function getTimeDelivery(): JsonResponse
