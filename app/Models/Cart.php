@@ -21,6 +21,9 @@ class Cart extends Model
         CartContract::STATUS,
         CartContract::ADDRESS,
         CartContract::APARTMENT,
-        CartContract::CITY
+        CartContract::CITY,
+        CartContract::PAYMENT_STATUS,
+        CartContract::PAYMENT_TYPE,
+        CartContract::ORDER_STATUS
     ];
 }
