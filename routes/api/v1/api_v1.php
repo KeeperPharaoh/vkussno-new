@@ -106,3 +106,4 @@ Route::middleware('auth:sanctum')
 ;
 
 Route::get('test',[CartController::class, 'test']);
+Route::get('test-all',[CartController::class, 'sendToAllDevice']);

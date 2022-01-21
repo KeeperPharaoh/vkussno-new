@@ -10,7 +10,6 @@ use App\Domain\Repositories\BonusRepositories;
 use App\Domain\Repositories\CartRepositories;
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\OrderRepositories;
-use App\Domain\Repositories\OrderStatusRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\ProductRepository;
 use App\Domain\Repositories\PromoRepositories;
@@ -24,17 +23,16 @@ use Prettus\Validator\Exceptions\ValidatorException;
 
 class CartServices extends BaseService
 {
-    private CartRepositories          $cartRepositories;
-    private ProductRepository         $productRepository;
-    private TimeDeliveryRepositories  $timeDeliveryRepositories;
-    private PaymentTypeRepository     $paymentTypeRepository;
-    private UserRepository            $userRepository;
-    private AddressRepositories       $addressRepositories;
-    private PromoRepositories         $promoRepositories;
-    private BonusRepositories         $bonusRepositories;
-    private OrderRepositories         $orderRepositories;
-    private CityRepositories          $cityRepositories;
-    private OrderStatusRepositories   $orderStatusRepositories;
+    private CartRepositories $cartRepositories;
+    private ProductRepository $productRepository;
+    private TimeDeliveryRepositories $timeDeliveryRepositories;
+    private PaymentTypeRepository $paymentTypeRepository;
+    private UserRepository $userRepository;
+    private AddressRepositories $addressRepositories;
+    private PromoRepositories $promoRepositories;
+    private BonusRepositories $bonusRepositories;
+    private OrderRepositories $orderRepositories;
+    private CityRepositories $cityRepositories;
 
     public function __construct(
         CartRepositories         $cartRepositories,
@@ -46,8 +44,7 @@ class CartServices extends BaseService
         PromoRepositories        $promoRepositories,
         BonusRepositories        $bonusRepositories,
         OrderRepositories        $orderRepositories,
-        CityRepositories         $cityRepositories,
-        OrderStatusRepositories  $orderStatusRepositories
+        CityRepositories         $cityRepositories
     ) {
         parent::__construct();
         $this->cartRepositories         = $cartRepositories;
@@ -60,7 +57,6 @@ class CartServices extends BaseService
         $this->bonusRepositories        = $bonusRepositories;
         $this->orderRepositories        = $orderRepositories;
         $this->cityRepositories         = $cityRepositories;
-        $this->orderStatusRepositories  = $orderStatusRepositories;
     }
 
     /** @noinspection PhpUndefinedFieldInspection */
@@ -77,15 +73,12 @@ class CartServices extends BaseService
         $userBonus     = $user->bonus;
         $city          = $user->city;
 
-        $time = $this->timeDeliveryRepositories
-                     ->findWhere([
-                        'id' => $timeId,
-                        ])
-                     ->first();
-
+        $time = $this->timeDeliveryRepositories->findWhere([
+                                                               'id' => $timeId,
+                                                           ])
+                                               ->first();
         $counterTime = $time->counter;
         $time        = $time->beginning_time . '-' . $time->end_time;
-
 
         foreach ($products as $product) {
             $productPrice = $this->productRepository->findWhere([
@@ -138,8 +131,6 @@ class CartServices extends BaseService
                                                                     CityContract::CITY => $city,
                                                                 ])
                                                     ->first();
-        $orderStatus = $this->orderStatusRepositories->first();
-        $orderStatus = $orderStatus->id;
 
         if ($sum < $freeDeliveryPrice->free) {
             $totalSum += $freeDeliveryPrice->price;
@@ -164,8 +155,9 @@ class CartServices extends BaseService
         }
         DB::commit();
 
+
         DB::beginTransaction();
-        $cart = $this->cartRepositories->accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus);
+        $cart = $this->cartRepositories->accept($payment->type, $address, $totalSum, $user, $comment, $time, $city);
         DB::commit();
 
         foreach ($products as $product) {
@@ -204,12 +196,12 @@ class CartServices extends BaseService
                                                                       ])
                                                           ->first();
                 $product->image = env('APP_URL') . '/storage/' . $product->image;
+                $product->quantity = $order->quantity;
                 $products[]     = $product;
             }
             $cart->order = $products;
             $products    = [];
         }
-
         return $carts;
     }
 }
