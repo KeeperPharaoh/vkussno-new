@@ -20,4 +20,6 @@ interface CartContract
     public const PAYMENT_TYPE   = "payment_type";
     public const PAYMENT_STATUS = "payment_status";
     public const ORDER_STATUS   = "order_status";
+    public const DELIVERY_PRICE = 'delivery_price';
+    public const BONUSES_SPEND  = 'bonuses_spend';
 }

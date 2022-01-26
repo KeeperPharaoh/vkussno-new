@@ -16,7 +16,7 @@ class CartRepositories extends BaseRepository
     }
 
 
-    public function accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus)
+    public function accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus, $deliveryPrice,$bonusesSpend)
     {
         $cart = Cart::query()
             ->create([
@@ -33,7 +33,9 @@ class CartRepositories extends BaseRepository
                 CartContract::CITY       => $city,
                 CartContract::ORDER_STATUS => $orderStatus,
                 CartContract::PAYMENT_STATUS => $payment->type,
-                CartContract::PAYMENT_TYPE => $payment->id
+                CartContract::PAYMENT_TYPE => $payment->id,
+                CartContract::DELIVERY_PRICE => $deliveryPrice,
+                CartContract::BONUSES_SPEND  => $bonusesSpend
                 ]);
         return $cart->id;
     }
@@ -42,7 +44,7 @@ class CartRepositories extends BaseRepository
     {
         return Cart::query()
             ->where('user_id', Auth::id())
-            ->select('id','status','sum')
+            ->select('id','status','sum', 'delivery_price', 'bonuses_spend')
             ->orderBy('created_at', 'desc')
             ->get()
             ;

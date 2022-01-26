@@ -76,7 +76,8 @@ class CartServices extends BaseService
         $user          = Auth::user();
         $userBonus     = $user->bonus;
         $city          = $user->city;
-
+        $deliveryPrice = 0;
+        $bonusesSpend  = 0;
         $time = $this->timeDeliveryRepositories->findWhere([
                                                                'id' => $timeId,
                                                            ])
@@ -120,6 +121,8 @@ class CartServices extends BaseService
             $totalSum  = $sum;
         }
 
+        $bonusesSpend   = abs($totalSum-$sum);
+
         $address = $this->addressRepositories->findWhere([
                                                              'id' => $addressId,
                                                          ])
@@ -138,6 +141,7 @@ class CartServices extends BaseService
 
         if ($sum < $freeDeliveryPrice->free) {
             $totalSum += $freeDeliveryPrice->price;
+            $deliveryPrice = $freeDeliveryPrice->price;
         }
 
         $percent = $this->bonusRepositories->getPercent();
@@ -162,7 +166,7 @@ class CartServices extends BaseService
         $orderStatus = $this->orderStatusRepositories->first();
 
         DB::beginTransaction();
-        $cart = $this->cartRepositories->accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus->id);
+        $cart = $this->cartRepositories->accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus->id, $deliveryPrice, $bonusesSpend);
         DB::commit();
 
         foreach ($products as $product) {
@@ -204,6 +208,8 @@ class CartServices extends BaseService
                 $product->quantity = $order->quantity;
                 $products[]     = $product;
             }
+            $cart->delivery_price = (int) $cart->delivery_price;
+            $cart->bonuses_spend  = (int) $cart->bonuses_spend;
             $cart->order = $products;
             $products    = [];
         }

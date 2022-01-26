@@ -24,6 +24,8 @@ class Cart extends Model
         CartContract::CITY,
         CartContract::PAYMENT_STATUS,
         CartContract::PAYMENT_TYPE,
-        CartContract::ORDER_STATUS
+        CartContract::ORDER_STATUS,
+        CartContract::DELIVERY_PRICE,
+        CartContract::BONUSES_SPEND
     ];
 }
