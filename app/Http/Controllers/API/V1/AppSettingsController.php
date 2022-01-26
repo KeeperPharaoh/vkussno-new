@@ -65,4 +65,10 @@ class AppSettingsController extends BaseController
         $result->end_time       = substr($result->end_time,0,-3);
         return  $this->sendResponse($result->beginning_time . '-' . $result->end_time);
     }
+
+    public function contacts(): JsonResponse
+    {
+        $result = $this->appSettingsService->contacts();
+        return $this->sendResponse($result);
+    }
 }

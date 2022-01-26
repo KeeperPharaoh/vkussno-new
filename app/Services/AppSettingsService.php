@@ -6,6 +6,7 @@ use App\Domain\Contracts\CityContract;
 use App\Domain\Contracts\DeliveryContract;
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
+use App\Domain\Repositories\SupportContactsRepositories;
 use App\Domain\Repositories\TimeDeliveryRepositories;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,16 +18,19 @@ class AppSettingsService extends BaseService
     private CityRepositories $cityRepositories;
     private TimeDeliveryRepositories $timeDeliveryRepositories;
     private PaymentTypeRepository $paymentTypeRepository;
+    private SupportContactsRepositories $supportContactsRepositories;
 
     public function __construct(
         CityRepositories            $cityRepositories,
         TimeDeliveryRepositories    $timeDeliveryRepositories,
-        PaymentTypeRepository       $paymentTypeRepository
+        PaymentTypeRepository       $paymentTypeRepository,
+        SupportContactsRepositories $supportContactsRepositories
     ) {
         parent::__construct();
         $this->timeDeliveryRepositories    = $timeDeliveryRepositories;
         $this->cityRepositories            = $cityRepositories;
         $this->paymentTypeRepository       = $paymentTypeRepository;
+        $this->supportContactsRepositories = $supportContactsRepositories;
     }
 
     public function city(): Collection
@@ -101,5 +105,10 @@ class AppSettingsService extends BaseService
             }
         }
         return false;
+    }
+
+    public function contacts()
+    {
+        return $this->supportContactsRepositories->first();
     }
 }
