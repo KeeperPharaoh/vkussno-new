@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Domain\Contracts\CityContract;
-use App\Domain\Contracts\DeliveryContract;
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\SupportContactsRepositories;

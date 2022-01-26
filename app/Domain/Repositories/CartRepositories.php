@@ -42,7 +42,7 @@ class CartRepositories extends BaseRepository
     {
         return Cart::query()
             ->where('user_id', Auth::id())
-            ->select('id','status')
+            ->select('id','status','sum')
             ->orderBy('created_at', 'desc')
             ->get()
             ;
