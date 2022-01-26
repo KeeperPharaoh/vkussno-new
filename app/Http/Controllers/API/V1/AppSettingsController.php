@@ -57,4 +57,12 @@ class AppSettingsController extends BaseController
         $result = $this->appSettingsService->paymentTypes();
         return  $this->sendResponse(new PaymentTypeCollection($result));
     }
+
+    public function soonestDeliveryTime(): JsonResponse
+    {
+        $result = $this->appSettingsService->soonestDeliveryTime();
+        $result->beginning_time = substr($result->beginning_time,0,-3);
+        $result->end_time       = substr($result->end_time,0,-3);
+        return  $this->sendResponse($result->beginning_time . '-' . $result->end_time);
+    }
 }

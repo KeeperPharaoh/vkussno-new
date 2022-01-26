@@ -7,6 +7,7 @@ use App\Domain\Contracts\DeliveryContract;
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\TimeDeliveryRepositories;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Japananimetime\Template\BaseService;
@@ -72,5 +73,33 @@ class AppSettingsService extends BaseService
             $result->status = true;
         }
         return $results;
+    }
+
+    public function soonestDeliveryTime()
+    {
+        $times = $this->timeDeliveryRepositories->all();
+        $currentTime = Carbon::now();
+        $differences = [];
+
+        foreach ($times as $time) {
+            $beginTime = Carbon::parse($time->beginning_time);
+            $endTime   = Carbon::parse($time->end_time);
+            if ($currentTime > $beginTime && $currentTime < $endTime) {
+                return $time;
+            } else {
+                $differences[] = [
+                    'id'   => $time->id,
+                    'diff' => $beginTime->diffInMinutes()
+                ];
+            }
+        }
+        $difference = array_column($differences, 'diff');
+        $diff = min($difference);
+        foreach ($differences as $difference) {
+            if ($diff == $difference['diff']) {
+                return $this->timeDeliveryRepositories->find($difference['id']);
+            }
+        }
+        return false;
     }
 }

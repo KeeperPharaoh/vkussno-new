@@ -10,6 +10,7 @@ use App\Domain\Repositories\BonusRepositories;
 use App\Domain\Repositories\CartRepositories;
 use App\Domain\Repositories\CityRepositories;
 use App\Domain\Repositories\OrderRepositories;
+use App\Domain\Repositories\OrderStatusRepositories;
 use App\Domain\Repositories\PaymentTypeRepository;
 use App\Domain\Repositories\ProductRepository;
 use App\Domain\Repositories\PromoRepositories;
@@ -33,6 +34,7 @@ class CartServices extends BaseService
     private BonusRepositories $bonusRepositories;
     private OrderRepositories $orderRepositories;
     private CityRepositories $cityRepositories;
+    private OrderStatusRepositories  $orderStatusRepositories;
 
     public function __construct(
         CartRepositories         $cartRepositories,
@@ -44,7 +46,8 @@ class CartServices extends BaseService
         PromoRepositories        $promoRepositories,
         BonusRepositories        $bonusRepositories,
         OrderRepositories        $orderRepositories,
-        CityRepositories         $cityRepositories
+        CityRepositories         $cityRepositories,
+        OrderStatusRepositories  $orderStatusRepositories
     ) {
         parent::__construct();
         $this->cartRepositories         = $cartRepositories;
@@ -57,6 +60,7 @@ class CartServices extends BaseService
         $this->bonusRepositories        = $bonusRepositories;
         $this->orderRepositories        = $orderRepositories;
         $this->cityRepositories         = $cityRepositories;
+        $this->orderStatusRepositories  = $orderStatusRepositories;
     }
 
     /** @noinspection PhpUndefinedFieldInspection */
@@ -155,9 +159,10 @@ class CartServices extends BaseService
         }
         DB::commit();
 
+        $orderStatus = $this->orderStatusRepositories->first();
 
         DB::beginTransaction();
-        $cart = $this->cartRepositories->accept($payment->type, $address, $totalSum, $user, $comment, $time, $city);
+        $cart = $this->cartRepositories->accept($payment, $address, $totalSum, $user, $comment, $time, $city, $orderStatus->id);
         DB::commit();
 
         foreach ($products as $product) {

@@ -93,6 +93,10 @@ Route::prefix('settings')
          Route::get('current-time', [AppSettingsController::class, 'getCurrentTimeDelivery']);
          //Получить способы оплаты
          Route::get('payment-types', [AppSettingsController::class, 'paymentTypes']);
+         //Получить ближайшее время доставки
+         Route::get('soonest-delivery-time', [AppSettingsController::class, 'soonestDeliveryTime']);
+         //Получить контакты
+         Route::get('contacts', [AppSettingsController::class, 'contacts']);
      })
 ;
 
