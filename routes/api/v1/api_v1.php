@@ -28,7 +28,10 @@ Route::middleware('auth:sanctum')
      ->group(function () {
          Route::get('get', [UserController::class, 'get']);
          Route::put('update', [UserController::class, 'update']);
+         //Смена города
          Route::get('change-city/{id}', [UserController::class, 'changeCity']);
+         //Смена языков
+         Route::get('change-language/{id}', [UserController::class, 'changeLanguage']);
      })
 ;
 
@@ -111,3 +114,6 @@ Route::middleware('auth:sanctum')
 
 Route::get('test',[CartController::class, 'test']);
 Route::get('test-all',[CartController::class, 'sendToAllDevice']);
+
+
+Route::get('payment-test', [CartController::class, 'paymentTest']);

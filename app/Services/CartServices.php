@@ -147,7 +147,7 @@ class CartServices extends BaseService
         $percent = $this->bonusRepositories->getPercent();
 
         $bonus = [
-            'bonus' => ($sum * ($percent->percent / 100)) + $bonusUser,
+            'bonus' => ($sum * ($percent->percent / 100)) + $userBonus,
         ];
 
         try {

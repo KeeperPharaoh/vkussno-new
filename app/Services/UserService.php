@@ -68,4 +68,24 @@ class UserService extends BaseService
         DB::commit();
         return true;
     }
+
+    public function changeLanguage(int $id): bool
+    {
+       if ($id == 1) {
+           $language = "ru";
+       } else {
+           $language = "kz";
+       }
+        try {
+           DB::beginTransaction();
+               $this->userRepository->update([
+                   UserContract::LANGUAGE => $language
+                                             ], Auth::id());
+           DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+           return false;
+        }
+       return true;
+    }
 }

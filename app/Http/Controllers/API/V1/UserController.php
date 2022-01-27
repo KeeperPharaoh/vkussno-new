@@ -47,4 +47,14 @@ class UserController extends BaseController
             return $this->sendError('Произошла ошибка');
         }
     }
+
+    public function changeLanguage(int $id): JsonResponse
+    {
+        $result = $this->userService->changeLanguage($id);
+        if ($result){
+            return $this->sendSuccessMessage("Операция прошла успешно");
+        } else {
+            return $this->sendError('Произошла ошибка');
+        }
+    }
 }
